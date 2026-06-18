@@ -154,6 +154,22 @@ footer{text-align:center; color:var(--muted); font-size:.82rem; padding:24px 16p
 .modal .mfoot{padding:10px 14px; display:flex; gap:8px; justify-content:flex-start;
   border-top:1px solid var(--line); background:#fafdfb}
 
+.submitcard{
+  background:linear-gradient(135deg,#16573c,#1b7a52); color:#fff;
+  border-radius:14px; padding:24px; text-align:center; margin:6px 0 4px;
+  box-shadow:0 6px 20px rgba(20,84,58,.18);
+}
+.submitcard h3{margin:0 0 6px; font-size:1.2rem}
+.submitcard p{margin:0 0 16px; font-size:.92rem; opacity:.95}
+.btn-send{
+  background:var(--gold); color:#1f2a24; border:none; border-radius:10px;
+  padding:13px 26px; font-family:inherit; font-size:1.02rem; font-weight:700;
+  cursor:pointer; transition:.15s; box-shadow:0 3px 10px rgba(0,0,0,.18);
+}
+.btn-send:hover{background:#d8ab5c; transform:translateY(-1px)}
+.btn-send:disabled{opacity:.6; cursor:default; transform:none}
+.subnote{margin-top:12px; font-size:.82rem; opacity:.9}
+.subnote a{color:#ffe7bd; cursor:pointer; text-decoration:underline}
 @media(max-width:600px){
   .metacard{grid-template-columns:1fr}
   .hero h1{font-size:1.25rem}
@@ -167,8 +183,8 @@ footer{text-align:center; color:var(--muted); font-size:.82rem; padding:24px 16p
   <div class="brand"><span class="dot">●</span><span class="t">استبيان متطلبات نظام المركز</span></div>
   <div class="actions">
     <span class="savestate" id="savestate">يُحفظ تلقائياً</span>
-    <button class="btn btn-gold" onclick="showMarkdown()">⧉ نسخ Markdown</button>
-    <button class="btn btn-light" onclick="downloadMarkdown()">⭳ تنزيل .md</button>
+    <button class="btn btn-light" onclick="showMarkdown()">⧉ Markdown</button>
+    <button class="btn btn-light" onclick="downloadMarkdown()">⭳ .md</button>
     <button class="btn btn-ghost" onclick="clearAll()">↺ مسح</button>
   </div>
 </div>
@@ -186,6 +202,13 @@ footer{text-align:center; color:var(--muted); font-size:.82rem; padding:24px 16p
   <div class="metacard" id="metacard"></div>
 
   <div id="form"></div>
+
+  <div class="submitcard">
+    <h3>إنهاء وإرسال</h3>
+    <p>عند الانتهاء من التعبئة، اضغط الزر لتصل الإجابات كاملةً إلى إدارة المركز مباشرةً.</p>
+    <button class="btn-send" id="sendBtn" onclick="submitToAdmin()">✉ إرسال لفادي</button>
+    <div class="subnote">أو <a onclick="downloadMarkdown()">نزّل الإجابات كملف</a> وأرسلها يدوياً.</div>
+  </div>
 
   <footer>
     <div class="footer-dua">جزاكم الله خيراً — وبارك الله في جهودكم لخدمة كتابه الكريم</div>
@@ -325,6 +348,10 @@ const SECTIONS = [
    {id:"o_notes", type:"textarea", label:"ملاحظات عامة:"},
  ]},
 ];
+
+/* ===================== الإعدادات ===================== */
+// إيميل إدارة المركز الذي تصل إليه الإجابات. غيّره إذا لزم.
+const ADMIN_EMAIL = "fadihitttih@gmail.com";
 
 /* ===================== الحالة والحفظ ===================== */
 const KEY = "qhc_form_v1";
@@ -542,6 +569,44 @@ function clearAll(){
   renderMeta(); renderForm(); updateProgress();
   toast("تم مسح كل الإجابات");
 }
+let SENDING=false;
+async function submitToAdmin(){
+  if(SENDING) return;
+  if(answeredCount() < 3){ toast("عبّئ بعض الإجابات أولاً قبل الإرسال"); return; }
+  if(!confirm("سيتم إرسال إجاباتك إلى إدارة المركز الآن. متابعة؟")) return;
+  const md = buildMarkdown();
+  const center = state['meta_center'] || 'مركز غير مسمّى';
+  const filler = state['meta_filler'] || '—';
+  const btn = document.getElementById('sendBtn');
+  SENDING = true; if(btn){ btn.disabled=true; btn.textContent="… جارٍ الإرسال"; }
+  toast("جارٍ إرسال الإجابات…");
+  try{
+    const res = await fetch("https://formsubmit.co/ajax/" + ADMIN_EMAIL, {
+      method:"POST",
+      headers:{ "Content-Type":"application/json", "Accept":"application/json" },
+      body: JSON.stringify({
+        _subject: "استبيان متطلبات النظام — " + center,
+        "المركز": center,
+        "المُعبّئ": filler,
+        "نسبة الإكمال": Math.round(answeredCount()/totalQuestions()*100) + "%",
+        "الإجابات (Markdown)": md,
+        _template: "box",
+        _captcha: "false"
+      })
+    });
+    let ok = res.ok;
+    try{ const j = await res.json(); if(j && j.success !== undefined) ok = (j.success===true || j.success==="true"); }catch(e){}
+    if(ok){
+      toast("✓ تم إرسال الإجابات بنجاح، جزاك الله خيراً");
+      if(btn){ btn.textContent="✓ تم الإرسال"; }
+      setTimeout(()=>{ if(btn){ btn.disabled=false; btn.textContent="✉ إرسال لفادي"; } },2500);
+    } else throw new Error("server");
+  }catch(e){
+    toast("تعذّر الإرسال — حمّل الملف وأرسله يدوياً عبر واتساب/إيميل");
+    if(btn){ btn.disabled=false; btn.textContent="✉ إرسال لفادي"; }
+  }finally{ SENDING=false; }
+}
+
 let toastTimer=null;
 function toast(msg){
   const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
