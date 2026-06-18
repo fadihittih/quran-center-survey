@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>استبيان متطلبات نظام إدارة مركز التحفيظ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#14543a; --green2:#1b7a52; --gold:#c79a4b; --gold2:#b8893b;
+  --bg:#f4f7f5; --card:#ffffff; --ink:#1f2a24; --muted:#6c7a72;
+  --line:#d8e5dd; --soft:#f3f8f5;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Tajawal','Segoe UI',Tahoma,sans-serif;
+  background:var(--bg); color:var(--ink); direction:rtl;
+  font-size:16px; line-height:1.7;
+}
+a{color:var(--green2)}
+
+/* ===== Top bar ===== */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  background:var(--green); color:#fff;
+  padding:10px 16px; display:flex; flex-wrap:wrap; gap:10px;
+  align-items:center; justify-content:space-between;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.topbar .brand{font-weight:700; font-size:1.02rem; display:flex; align-items:center; gap:8px}
+.topbar .brand .dot{color:var(--gold); font-size:1.3rem}
+.actions{display:flex; flex-wrap:wrap; gap:8px}
+.btn{
+  border:none; border-radius:8px; padding:8px 14px; font-family:inherit;
+  font-size:.92rem; font-weight:700; cursor:pointer; display:inline-flex;
+  align-items:center; gap:6px; transition:.15s;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn-gold{background:var(--gold); color:#1f2a24}
+.btn-gold:hover{background:#d8ab5c}
+.btn-light{background:#ffffff; color:var(--green)}
+.btn-ghost{background:rgba(255,255,255,.15); color:#fff}
+.btn-ghost:hover{background:rgba(255,255,255,.28)}
+.savestate{font-size:.8rem; opacity:.9; min-width:90px; text-align:left}
+
+/* ===== Layout ===== */
+.wrap{max-width:900px; margin:0 auto; padding:18px 16px 80px}
+.hero{
+  background:linear-gradient(135deg,#16573c,#1b7a52); color:#fff;
+  border-radius:14px; padding:26px 24px; margin-bottom:18px;
+  box-shadow:0 6px 20px rgba(20,84,58,.18);
+}
+.hero .bismillah{color:#ffe7bd; font-size:.95rem; margin-bottom:6px}
+.hero h1{margin:6px 0 4px; font-size:1.55rem; line-height:1.4}
+.hero .sub{color:#ffe7bd; font-weight:700; font-size:.95rem}
+.hero .desc{margin-top:12px; font-size:.92rem; line-height:1.9; opacity:.96}
+.hero .hint{margin-top:10px; font-size:.84rem; background:rgba(255,255,255,.12);
+  border-radius:8px; padding:8px 12px}
+
+/* ===== Meta ===== */
+.metacard{
+  background:var(--card); border:1px solid var(--line); border-radius:12px;
+  padding:14px 16px; margin-bottom:18px;
+  display:grid; grid-template-columns:1fr 1fr; gap:12px;
+}
+.metacard .f{display:flex; flex-direction:column; gap:4px}
+.metacard label{font-size:.85rem; font-weight:700; color:var(--green)}
+.metacard input{font-family:inherit; font-size:.95rem; padding:8px 10px;
+  border:1px solid var(--line); border-radius:8px; background:#fcfdfc}
+
+/* ===== Sections ===== */
+.section{
+  background:var(--card); border:1px solid var(--line); border-radius:12px;
+  margin-bottom:16px; overflow:hidden; scroll-margin-top:72px;
+}
+.section > h2{
+  margin:0; background:var(--green); color:#fff; font-size:1.05rem;
+  padding:11px 16px; display:flex; align-items:center; gap:10px;
+}
+.section.key > h2{background:linear-gradient(90deg,#14543a,#1b7a52)}
+.section > h2 .num{
+  background:var(--gold); color:#1f2a24; border-radius:50%;
+  width:26px; height:26px; display:inline-flex; align-items:center;
+  justify-content:center; font-size:.85rem; font-weight:700; flex:none;
+}
+.section > h2 .tag{margin-inline-start:auto; font-size:.72rem; background:var(--gold);
+  color:#1f2a24; padding:2px 9px; border-radius:20px}
+.sbody{padding:8px 16px 16px}
+
+.q{padding:12px 0; border-bottom:1px dashed #e7efea}
+.q:last-child{border-bottom:none}
+.q .label{font-weight:700; color:var(--green); margin-bottom:8px; display:block}
+.q .label .hint{font-weight:400; color:var(--muted); font-size:.82rem}
+
+.opts{display:flex; flex-wrap:wrap; gap:6px 10px}
+.opts.col{flex-direction:column}
+.optchip{
+  display:inline-flex; align-items:center; gap:7px; cursor:pointer;
+  border:1px solid var(--line); background:#fbfdfc; border-radius:9px;
+  padding:7px 11px; font-size:.92rem; user-select:none; transition:.12s;
+}
+.optchip:hover{border-color:var(--green2)}
+.optchip input{accent-color:var(--green2); width:17px; height:17px; cursor:pointer}
+.optchip.on{background:var(--soft); border-color:var(--green2); color:var(--green)}
+.other{margin-top:8px; display:flex; align-items:center; gap:8px}
+.other span{font-size:.88rem; color:var(--muted); font-weight:700}
+input.txt, textarea.txt{
+  width:100%; font-family:inherit; font-size:.95rem; padding:9px 11px;
+  border:1px solid var(--line); border-radius:8px; background:#fcfdfc; color:var(--ink);
+}
+input.txt:focus, textarea.txt:focus{outline:none; border-color:var(--green2); background:#fff}
+textarea.txt{resize:vertical; min-height:70px}
+.other input.txt{flex:1}
+
+table.tbl{width:100%; border-collapse:collapse; font-size:.9rem}
+table.tbl th,table.tbl td{border:1px solid var(--line); padding:6px; text-align:center}
+table.tbl th{background:var(--soft); color:var(--green); font-size:.85rem}
+table.tbl input{width:100%; border:none; background:transparent; text-align:center;
+  font-family:inherit; font-size:.92rem; padding:5px}
+table.tbl input:focus{outline:1px solid var(--green2); border-radius:4px}
+table.tbl td.rowlabel{text-align:right; background:#fafdfb; font-weight:600; color:var(--ink)}
+
+.note{background:#fff7e8; border-inline-start:4px solid var(--gold);
+  padding:9px 12px; border-radius:8px; font-size:.86rem; color:#5a4a25; margin:8px 0}
+
+/* progress */
+.progwrap{position:sticky; top:54px; z-index:40; height:5px; background:#e3ece7}
+.progbar{height:100%; width:0; background:var(--gold); transition:width .25s}
+
+footer{text-align:center; color:var(--muted); font-size:.82rem; padding:24px 16px}
+.footer-dua{color:var(--green); font-weight:700; margin-bottom:6px}
+
+/* toast */
+.toast{position:fixed; bottom:22px; right:50%; transform:translateX(50%) translateY(20px);
+  background:var(--green); color:#fff; padding:11px 20px; border-radius:30px;
+  font-size:.9rem; font-weight:700; opacity:0; pointer-events:none; transition:.25s; z-index:100;
+  box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.toast.show{opacity:1; transform:translateX(50%) translateY(0)}
+
+/* modal */
+.modal{position:fixed; inset:0; background:rgba(0,0,0,.5); display:none;
+  align-items:center; justify-content:center; z-index:90; padding:18px}
+.modal.show{display:flex}
+.modal .box{background:#fff; border-radius:14px; width:100%; max-width:760px;
+  max-height:86vh; display:flex; flex-direction:column; overflow:hidden}
+.modal .mhead{background:var(--green); color:#fff; padding:12px 16px; display:flex;
+  align-items:center; justify-content:space-between}
+.modal .mhead h3{margin:0; font-size:1rem}
+.modal textarea{flex:1; border:none; padding:14px; font-family:ui-monospace,Menlo,Consolas,monospace;
+  font-size:.82rem; direction:ltr; text-align:left; resize:none; min-height:340px; color:#222}
+.modal .mfoot{padding:10px 14px; display:flex; gap:8px; justify-content:flex-start;
+  border-top:1px solid var(--line); background:#fafdfb}
+
+@media(max-width:600px){
+  .metacard{grid-template-columns:1fr}
+  .hero h1{font-size:1.25rem}
+  .topbar .brand span.t{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="dot">●</span><span class="t">استبيان متطلبات نظام المركز</span></div>
+  <div class="actions">
+    <span class="savestate" id="savestate">يُحفظ تلقائياً</span>
+    <button class="btn btn-gold" onclick="showMarkdown()">⧉ نسخ Markdown</button>
+    <button class="btn btn-light" onclick="downloadMarkdown()">⭳ تنزيل .md</button>
+    <button class="btn btn-ghost" onclick="clearAll()">↺ مسح</button>
+  </div>
+</div>
+<div class="progwrap"><div class="progbar" id="progbar"></div></div>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+    <h1>استبيان متطلبات نظام إدارة مركز تحفيظ القرآن الكريم</h1>
+    <div class="sub">وثيقة تحديد الاحتياجات — تُعبّأ من قِبل إدارة المركز</div>
+    <div class="desc">الهدف جمع كل التفاصيل اللازمة لبناء نظام يدير شؤون المركز: الطلاب والحلقات والمعلمين، والتسميع والمراجعة والتقييم، والدورات والتقارير والمالية. كلما كانت إجاباتكم أدق، كان النظام أقرب لواقع عملكم.</div>
+    <div class="hint">إجاباتك تُحفظ تلقائياً داخل هذا المتصفّح، فلن تضيع لو أغلقت الصفحة. عند الانتهاء اضغط «نسخ Markdown» أو «تنزيل .md».</div>
+  </div>
+
+  <div class="metacard" id="metacard"></div>
+
+  <div id="form"></div>
+
+  <footer>
+    <div class="footer-dua">جزاكم الله خيراً — وبارك الله في جهودكم لخدمة كتابه الكريم</div>
+    استبيان متطلبات نظام إدارة مركز التحفيظ
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal" id="mdModal">
+  <div class="box">
+    <div class="mhead">
+      <h3>النتائج بصيغة Markdown</h3>
+      <button class="btn btn-ghost" onclick="closeModal()">✕ إغلاق</button>
+    </div>
+    <textarea id="mdText" readonly></textarea>
+    <div class="mfoot">
+      <button class="btn btn-gold" onclick="copyMarkdown()">⧉ نسخ إلى الحافظة</button>
+      <button class="btn btn-light" onclick="downloadMarkdown()">⭳ تنزيل ملف .md</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===================== البيانات (Schema) ===================== */
+const META = [
+  {id:"center", label:"اسم المركز"},
+  {id:"filler", label:"اسم مُعبّئ الاستبيان وصفته"},
+  {id:"date",   label:"التاريخ"},
+  {id:"phone",  label:"رقم التواصل"},
+];
+
+// types: text, textarea, single, multi, table
+const SECTIONS = [
+ {n:"١", t:"معلومات المركز الأساسية", q:[
+   {id:"c_name", type:"text", label:"اسم المركز ومكانه (المدينة/الحي):"},
+   {id:"c_type", type:"single", label:"طبيعة المركز:", opts:["مسجد / حلقات مسجد","مركز / أكاديمية مستقلة","جمعية خيرية","أونلاين (عن بُعد)","مختلط (حضوري + أونلاين)"]},
+   {id:"c_aud", type:"multi", label:"الفئات المستهدفة:", opts:["أطفال","شباب","رجال","نساء","كبار السن","ذوو احتياجات خاصة"]},
+   {id:"c_branch", type:"single", label:"عدد الفروع:", opts:["فرع واحد","فرعان","أكثر من فرعين"], other:true},
+ ]},
+ {n:"٢", t:"الهدف من النظام والأولويات", q:[
+   {id:"g_problem", type:"textarea", label:"ما المشكلة الأساسية التي تريد أن يحلّها النظام؟", hint:"اكتب بصراحة ما يُتعبك حالياً"},
+   {id:"g_now", type:"multi", label:"كيف تُدار أمور المركز حالياً؟", opts:["ورقياً (دفاتر/سجلات)","ملفات إكسل","مجموعات واتساب","نظام/تطبيق حالي","لا يوجد تنظيم محدد"], other:true},
+   {id:"g_prio", type:"multi", label:"اختر أهم الأمور التي تريد أن ينجزها النظام أولاً:", opts:["متابعة حفظ الطلاب وتقدّمهم","تسجيل التسميع والتقييم اليومي","ضبط الحضور والغياب","تنظيم الحلقات والمعلمين","تقارير لأولياء الأمور","إدارة الدورات والمقررات","الجانب المالي والاشتراكات","التواصل والإشعارات"]},
+   {id:"g_tried", type:"single", label:"هل جرّبت أنظمة جاهزة لإدارة مراكز التحفيظ من قبل؟", opts:["لا","نعم، وما زلت أستخدمها","نعم، لكنها لم تناسبني"]},
+   {id:"g_tried_note", type:"text", label:"إن كان نعم، ما اسمها وما الذي لم يعجبك فيها؟"},
+ ]},
+ {n:"٣", t:"الحجم والمستخدمون", q:[
+   {id:"sz_table", type:"table", label:"الأعداد التقريبية:",
+     cols:["البند","العدد الحالي","المتوقع بعد سنتين"],
+     rows:["عدد الطلاب","عدد المعلمين / المحفّظين","عدد المشرفين","عدد الحلقات"]},
+   {id:"sz_entry", type:"single", label:"مَن سيُدخل البيانات في النظام فعلياً؟", opts:["المعلّم بنفسه","المشرف","موظف إدخال مخصّص","الطالب / ولي الأمر"], other:true},
+   {id:"sz_skill", type:"single", label:"مدى مهارة المعلمين في استخدام التقنية:", opts:["مرتاحون جداً","متوسط","يحتاجون واجهة بسيطة جداً"]},
+ ]},
+ {n:"٤", t:"الأدوار والصلاحيات", q:[
+   {id:"r_roles", type:"multi", label:"ما الأدوار المطلوبة في النظام؟", opts:["مدير عام (يرى ويدير كل شيء)","مشرف (يدير حلقات/معلمين تحته)","معلّم / محفّظ","طالب","ولي أمر","موظف إداري / استقبال","محاسب"], other:true},
+   {id:"r_see", type:"single", label:"هل يرى المعلّم طلاب غيره من المعلمين؟", opts:["لا، طلابه فقط","نعم، ضمن حلقته فقط","نعم، الكل (للقراءة فقط)"]},
+   {id:"r_edit", type:"single", label:"من يحقّ له تعديل التقييم بعد إدخاله؟", opts:["المعلّم خلال يوم/يومين","المشرف فقط","المدير فقط"], other:true},
+ ]},
+ {n:"٥", t:"بيانات الطلاب والتسجيل", q:[
+   {id:"st_fields", type:"multi", label:"ما البيانات التي تريد حفظها لكل طالب؟", opts:["الاسم الكامل","العمر / تاريخ الميلاد","رقم الهاتف","اسم ولي الأمر ورقمه","العنوان / المنطقة","المدرسة / الجامعة","صورة شخصية","الحالة الصحية / ملاحظات","المستوى عند الالتحاق","تاريخ الالتحاق"], other:true},
+   {id:"st_reg", type:"single", label:"كيف يتم تسجيل الطالب الجديد؟", opts:["الإدارة تسجّله","الطالب/ولي الأمر يسجّل ثم تعتمده الإدارة","تسجيل ذاتي مباشر"]},
+ ]},
+ {n:"٦", t:"الحلقات والمجموعات", q:[
+   {id:"h_teacher", type:"single", label:"كيف تُنظَّم الحلقة؟", opts:["معلّم واحد ثابت لكل حلقة","قد يتناوب أكثر من معلّم"]},
+   {id:"h_multi", type:"single", label:"هل يكون الطالب في أكثر من حلقة في آنٍ واحد؟", hint:"مثلاً حلقة حفظ + حلقة تجويد", opts:["حلقة واحدة فقط","نعم، أكثر من حلقة"]},
+   {id:"h_split", type:"multi", label:"على أي أساس تُقسّم الحلقات؟", opts:["حسب المستوى","حسب العمر","حسب الوقت (صباحي/مسائي)","حسب المقدار المحفوظ","حسب النوع (حفظ/مراجعة/تجويد)"], other:true},
+   {id:"h_move", type:"single", label:"هل تحتاج تسجيل حركة نقل الطالب بين الحلقات وتاريخها؟", opts:["نعم، مهم","لا حاجة"]},
+ ]},
+ {n:"٧", t:"قواعد التسميع والتقييم", key:true, tag:"أهم قسم", q:[
+   {id:"e_mode", type:"single", label:"كيف تُقيّم جلسة التسميع؟", opts:["تقدير لفظي (ممتاز/جيد جداً/جيد/مقبول/ضعيف)","درجة رقمية من 10","درجة رقمية من 100","عدد الأخطاء فقط","ناجح / يُعيد"], other:true},
+   {id:"e_err", type:"multi", label:"ما أنواع الأخطاء التي تريد تسجيلها بشكل منفصل؟", opts:["خطأ في الحفظ (نسيان/تردّد)","خطأ في التجويد","خطأ في الأداء/المخارج","التفريق بين الجلي والخفي","عدد مرات التذكير (التلقين)"]},
+   {id:"e_notes", type:"single", label:"هل تريد حقل ملاحظات نصّي مع كل تسميع؟", opts:["نعم","لا"]},
+   {id:"e_desc", type:"textarea", label:"اشرح باختصار طريقتك في التقييم إن كانت خاصة بك:"},
+ ]},
+ {n:"٨", t:"تتبّع الحفظ والمراجعة", q:[
+   {id:"m_unit", type:"single", label:"ما وحدة القياس التي تتابع بها الحفظ؟", opts:["بالآية","بالصفحة / الوجه","بالثُّمن","بالربع / الحزب","بالجزء","بالسورة"]},
+   {id:"m_types", type:"multi", label:"ما أنواع الجلسات التي تريد التفريق بينها؟", opts:["حفظ جديد","مراجعة قريبة (الورد القريب)","مراجعة بعيدة (الورد البعيد)","تثبيت / تلاوة"]},
+   {id:"m_auto", type:"single", label:"هل تريد أن يقترح النظام تلقائياً ما يجب مراجعته؟", opts:["نعم، جدول مراجعة تلقائي","لا، المعلّم يحدّد يدوياً"]},
+   {id:"m_map", type:"single", label:"هل تريد مخططاً بصرياً لتقدّم الطالب في المصحف؟", hint:"خريطة الأجزاء المحفوظة", opts:["نعم","لا"]},
+   {id:"m_riwaya", type:"single", label:"هل تتبع رواية واحدة أم أكثر؟", opts:["حفص عن عاصم فقط","أكثر من رواية"], other:true},
+ ]},
+ {n:"٩", t:"المقررات والدورات (تلاوة / تجويد)", q:[
+   {id:"d_types", type:"multi", label:"ما أنواع الدورات التي تقدّمها؟", opts:["دورة تجويد","دورة تلاوة وإتقان","دورة تأسيس / نورانية","دورات مكثّفة (صيفية)","دورات متون وعلوم قرآن"], other:true},
+   {id:"d_period", type:"single", label:"هل للدورة بداية ونهاية محددة (بخلاف الحلقة الدائمة)؟", opts:["نعم، مدة محددة","مستمرة"]},
+   {id:"d_levels", type:"single", label:"هل تحتاج تتبّع مستويات الدورة واجتيازها؟", opts:["نعم، مستويات متدرّجة","نجاح / رسوب فقط","لا حاجة"]},
+   {id:"d_cert", type:"single", label:"هل تُصدر شهادة عند إتمام الدورة؟", opts:["نعم، يطبعها النظام","لا"]},
+ ]},
+ {n:"١٠", t:"الحضور والغياب", q:[
+   {id:"a_how", type:"multi", label:"كيف يُسجَّل الحضور؟", opts:["المعلّم يسجّل يدوياً كل جلسة","الطالب يسجّل دخوله بنفسه","بصمة / رمز QR"]},
+   {id:"a_states", type:"multi", label:"ما حالات الحضور التي تريدها؟", opts:["حاضر","غائب","غائب بعذر","متأخّر","إجازة"]},
+   {id:"a_alert", type:"multi", label:"هل يُرسل النظام تنبيهاً عند الغياب؟", opts:["نعم، لولي الأمر","نعم، للمشرف","لا"]},
+ ]},
+ {n:"١١", t:"الاختبارات والإجازات والشهادات", q:[
+   {id:"x_tests", type:"multi", label:"هل لديك اختبارات دورية؟", opts:["اختبار جزء","اختبار عدة أجزاء (سَبْر)","اختبار نصف القرآن / ختمة","اختبار شهري دوري"], other:true},
+   {id:"x_ijaza", type:"single", label:"هل تتابع الإجازات والأسانيد؟", opts:["نعم، نمنح إجازات بالسند","لا"]},
+   {id:"x_docs", type:"multi", label:"ما الشهادات/الوثائق التي تريد أن يطبعها النظام؟", opts:["شهادة إتمام حفظ","شهادة اجتياز اختبار","شهادة إجازة بالسند","كشف درجات"], other:true},
+ ]},
+ {n:"١٢", t:"المالية والاشتراكات", q:[
+   {id:"f_manage", type:"single", label:"هل يُدير النظام الجانب المالي؟", opts:["نعم، جزء أساسي","لاحقاً في مرحلة ثانية","لا، المركز مجاني"]},
+   {id:"f_fees", type:"single", label:"إن وُجدت رسوم، كيف تُحتسب؟", opts:["اشتراك شهري","اشتراك فصلي","رسم لكل دورة","مجاني مع تبرعات"]},
+   {id:"f_need", type:"multi", label:"ما المطلوب مالياً من النظام؟", opts:["متابعة المدفوع والمتبقّي على الطلاب","إصدار سندات قبض / فواتير","رواتب/مكافآت المعلمين","مصاريف المركز العامة","تقارير مالية"]},
+   {id:"f_pay", type:"single", label:"هل تريد بوابة دفع إلكتروني؟", opts:["نعم","لا، دفع يدوي"]},
+ ]},
+ {n:"١٣", t:"التقارير والمخرجات", q:[
+   {id:"rp_need", type:"multi", label:"ما التقارير التي تحتاجها؟", opts:["تقرير تقدّم لكل طالب","تقرير أداء حلقة كاملة","تقرير أداء معلّم","تقرير حضور وغياب","تقرير شهري لولي الأمر","إحصائيات عامة للإدارة (لوحة معلومات)","ترتيب الطلاب المتميزين"], other:true},
+   {id:"rp_gov", type:"single", label:"هل تُرفع تقارير لجهة إشرافية (وزارة/أوقاف) بصيغة محددة؟", opts:["نعم","لا"]},
+   {id:"rp_gov_note", type:"text", label:"إن كان نعم، ما هي الجهة والصيغة؟"},
+   {id:"rp_export", type:"multi", label:"صيغة التصدير المفضّلة:", opts:["PDF","Excel","طباعة مباشرة"]},
+ ]},
+ {n:"١٤", t:"التواصل والإشعارات", q:[
+   {id:"n_ch", type:"multi", label:"ما قنوات التواصل المطلوبة؟", opts:["واتساب","رسائل SMS","إشعار داخل التطبيق","بريد إلكتروني"]},
+   {id:"n_when", type:"multi", label:"ما المناسبات التي تستدعي إشعاراً؟", opts:["غياب الطالب","ضعف الأداء","تذكير بموعد الحلقة","تقرير دوري لولي الأمر","استحقاق دفعة مالية","إنجاز/تهنئة (ختمة، إتمام جزء)"]},
+ ]},
+ {n:"١٥", t:"المتطلبات التقنية", q:[
+   {id:"t_form", type:"multi", label:"على أي شكل تريد النظام؟", opts:["تطبيق جوال (أندرويد/آيفون)","موقع ويب يُفتح بالمتصفّح","الاثنان معاً","برنامج على جهاز المركز"]},
+   {id:"t_net", type:"single", label:"هل يتوفّر إنترنت ثابت في مكان الحلقات؟", opts:["نعم، جيد","ضعيف أحياناً","يجب أن يعمل بدون إنترنت (أوفلاين)"]},
+   {id:"t_lang", type:"single", label:"لغة الواجهة:", opts:["عربية فقط","عربية + إنجليزية"], other:true},
+   {id:"t_backup", type:"single", label:"من سيدير النسخ الاحتياطي والمتابعة التقنية؟", opts:["مزوّد النظام (خدمة سحابية)","شخص داخل المركز","غير محدّد بعد"]},
+ ]},
+ {n:"١٦", t:"الربط والتكامل ونقل البيانات", q:[
+   {id:"i_data", type:"multi", label:"هل توجد بيانات حالية تريد نقلها إلى النظام؟", opts:["ملفات إكسل","سجلات ورقية","نظام قديم","لا توجد"]},
+   {id:"i_ext", type:"multi", label:"هل تريد ربط النظام بخدمات خارجية؟", opts:["واتساب (للإشعارات)","بوابة دفع","نظام محاسبة","جوجل (تقويم/درايف)"], other:true},
+ ]},
+ {n:"١٧", t:"الخصوصية والأمان", q:[
+   {id:"p_priv", type:"multi", label:"بما أن قسماً من الطلاب أطفال، ما متطلبات الخصوصية؟", opts:["عدم إظهار أرقام الطلاب لبعضهم","فصل بيانات الطالبات (للمعلمات فقط)","موافقة ولي الأمر على البيانات","تقييد الصور"], other:true},
+   {id:"p_login", type:"single", label:"طريقة الدخول للنظام:", opts:["اسم مستخدم وكلمة سر","رقم هاتف ورمز تحقّق","لا يهم"]},
+ ]},
+ {n:"١٨", t:"الميزانية والإطار الزمني", q:[
+   {id:"b_when", type:"single", label:"متى تأمل أن يبدأ استخدام النظام؟", opts:["خلال شهر","خلال 3 أشهر","خلال 6 أشهر","لا يوجد وقت محدد"]},
+   {id:"b_budget", type:"single", label:"تصوّرك للميزانية:", opts:["محدودة","متوسطة","مرنة حسب الجودة","أفضّل اشتراك شهري على دفعة كبيرة"]},
+   {id:"b_mvp", type:"single", label:"هل تفضّل البدء بنسخة مبسّطة ثم التوسّع؟", opts:["نعم، أبدأ صغيراً","أريد كل المزايا من البداية"]},
+ ]},
+ {n:"١٩", t:"ملاحظات حرة وأمنيات", q:[
+   {id:"o_wish", type:"textarea", label:"أي ميزة تتمنى وجودها ولم تُذكر في الاستبيان:"},
+   {id:"o_pain", type:"textarea", label:"أكثر شيء يُتعبك حالياً في إدارة المركز:"},
+   {id:"o_notes", type:"textarea", label:"ملاحظات عامة:"},
+ ]},
+];
+
+/* ===================== الحالة والحفظ ===================== */
+const KEY = "qhc_form_v1";
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch(e){ state = {}; }
+
+function save(){
+  try{
+    localStorage.setItem(KEY, JSON.stringify(state));
+    flashSaved();
+  }catch(e){ document.getElementById('savestate').textContent = "تعذّر الحفظ"; }
+  updateProgress();
+}
+let savedTimer=null;
+function flashSaved(){
+  const el=document.getElementById('savestate');
+  el.textContent="✓ تم الحفظ";
+  clearTimeout(savedTimer);
+  savedTimer=setTimeout(()=>{ el.textContent="يُحفظ تلقائياً"; },1200);
+}
+function setVal(id,v){ if(v===""||v==null||(Array.isArray(v)&&!v.length)) delete state[id]; else state[id]=v; save(); }
+function getVal(id){ return state[id]; }
+
+/* ===================== العرض (Render) ===================== */
+function el(tag,cls,html){ const e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; }
+
+function renderMeta(){
+  const c=document.getElementById('metacard');
+  META.forEach(m=>{
+    const f=el('div','f');
+    const lab=el('label',null,m.label); lab.setAttribute('for','meta_'+m.id);
+    const inp=el('input'); inp.id='meta_'+m.id; inp.type='text'; inp.value=getVal('meta_'+m.id)||'';
+    inp.addEventListener('input',()=>setVal('meta_'+m.id,inp.value.trim()));
+    f.append(lab,inp); c.appendChild(f);
+  });
+}
+
+function renderForm(){
+  const root=document.getElementById('form');
+  SECTIONS.forEach(sec=>{
+    const s=el('section','section'+(sec.key?' key':'')); s.id='sec_'+sec.n;
+    const h=el('h2',null,'<span class="num">'+sec.n+'</span> '+sec.t+(sec.tag?'<span class="tag">'+sec.tag+'</span>':''));
+    s.appendChild(h);
+    const body=el('div','sbody');
+    if(sec.key) body.appendChild(el('div','note','هذا القسم هو قلب النظام. كلما وصفت طريقتك بدقة، خرج النظام مطابقاً لعملك تماماً.'));
+    sec.q.forEach(q=> body.appendChild(renderQ(q)));
+    s.appendChild(body);
+    root.appendChild(s);
+  });
+}
+
+function renderQ(q){
+  const w=el('div','q');
+  const lab=el('span','label', q.label + (q.hint?' <span class="hint">('+q.hint+')</span>':''));
+  w.appendChild(lab);
+
+  if(q.type==='text'){
+    const i=el('input','txt'); i.type='text'; i.value=getVal(q.id)||'';
+    i.addEventListener('input',()=>setVal(q.id,i.value.trim()));
+    w.appendChild(i);
+  }
+  else if(q.type==='textarea'){
+    const i=el('textarea','txt'); i.value=getVal(q.id)||'';
+    i.addEventListener('input',()=>setVal(q.id,i.value.trim()));
+    w.appendChild(i);
+  }
+  else if(q.type==='single' || q.type==='multi'){
+    const box=el('div','opts'+(q.opts.length>5?' ':''));
+    const cur=getVal(q.id);
+    q.opts.forEach((opt,idx)=>{
+      const chip=el('label','optchip');
+      const inp=el('input'); inp.type = q.type==='single'?'radio':'checkbox'; inp.name=q.id;
+      if(q.type==='single'){ if(cur===opt){inp.checked=true; chip.classList.add('on');} }
+      else { if(Array.isArray(cur)&&cur.includes(opt)){inp.checked=true; chip.classList.add('on');} }
+      inp.addEventListener('change',()=>{
+        if(q.type==='single'){
+          document.getElementsByName(q.id).forEach(r=>r.closest('.optchip').classList.remove('on'));
+          chip.classList.add('on'); setVal(q.id,opt);
+        } else {
+          let arr=Array.isArray(getVal(q.id))?getVal(q.id).slice():[];
+          if(inp.checked){ if(!arr.includes(opt))arr.push(opt); chip.classList.add('on'); }
+          else { arr=arr.filter(x=>x!==opt); chip.classList.remove('on'); }
+          setVal(q.id,arr);
+        }
+      });
+      chip.append(inp, document.createTextNode(opt));
+      box.appendChild(chip);
+    });
+    w.appendChild(box);
+    if(q.other){
+      const o=el('div','other');
+      o.appendChild(el('span',null,'غير ذلك:'));
+      const i=el('input','txt'); i.type='text'; i.placeholder='اكتب ما تريده هنا…'; i.value=getVal(q.id+'_other')||'';
+      i.addEventListener('input',()=>setVal(q.id+'_other',i.value.trim()));
+      o.appendChild(i); w.appendChild(o);
+    }
+  }
+  else if(q.type==='table'){
+    const cur=getVal(q.id)||{};
+    const tbl=el('table','tbl');
+    const tr=el('tr'); q.cols.forEach(c=>tr.appendChild(el('th',null,c))); tbl.appendChild(tr);
+    q.rows.forEach((row,ri)=>{
+      const r=el('tr');
+      r.appendChild(el('td','rowlabel',row));
+      for(let ci=1; ci<q.cols.length; ci++){
+        const td=el('td'); const i=el('input'); i.type='text';
+        const ck=q.id+'__'+ri+'__'+ci;
+        i.value=cur[ck]||'';
+        i.addEventListener('input',()=>{ const obj=getVal(q.id)||{}; if(i.value.trim())obj[ck]=i.value.trim(); else delete obj[ck]; setVal(q.id,Object.keys(obj).length?obj:''); });
+        td.appendChild(i); r.appendChild(td);
+      }
+      tbl.appendChild(r);
+    });
+    w.appendChild(tbl);
+  }
+  return w;
+}
+
+/* ===================== التقدّم ===================== */
+function totalQuestions(){ let n=META.length; SECTIONS.forEach(s=>n+=s.q.length); return n; }
+function answeredCount(){
+  let n=0;
+  META.forEach(m=>{ if(state['meta_'+m.id]) n++; });
+  SECTIONS.forEach(s=>s.q.forEach(q=>{
+    const v=state[q.id], o=state[q.id+'_other'];
+    if((Array.isArray(v)&&v.length) || (v && !Array.isArray(v) && typeof v!=='object') || (v&&typeof v==='object'&&Object.keys(v).length) || o) n++;
+  }));
+  return n;
+}
+function updateProgress(){
+  const pct=Math.round(answeredCount()/totalQuestions()*100);
+  document.getElementById('progbar').style.width=pct+'%';
+}
+
+/* ===================== توليد Markdown ===================== */
+function buildMarkdown(){
+  let md="# استبيان متطلبات نظام إدارة مركز تحفيظ القرآن الكريم\n\n";
+  const metaLines=[];
+  META.forEach(m=>{ const v=state['meta_'+m.id]; if(v) metaLines.push("- **"+m.label+":** "+v); });
+  if(metaLines.length) md+=metaLines.join("\n")+"\n\n";
+  md+="---\n\n";
+
+  SECTIONS.forEach(sec=>{
+    let block="";
+    sec.q.forEach(q=>{
+      const ans=answerToText(q);
+      if(ans!==null) block+="**"+stripHint(q.label)+"** "+ans+"\n\n";
+    });
+    if(block){ md+="## "+sec.n+". "+sec.t+"\n\n"+block; }
+  });
+  md=md.replace(/\n{3,}/g,"\n\n").trimEnd()+"\n";
+  return md;
+}
+function stripHint(s){ return s.replace(/\s*<span[\s\S]*?<\/span>/g,'').trim(); }
+function answerToText(q){
+  const v=state[q.id], o=state[q.id+'_other'];
+  if(q.type==='text'){ return v?v:null; }
+  if(q.type==='textarea'){ return v? "\n\n"+v : null; }
+  if(q.type==='single'){
+    let parts=[]; if(v)parts.push(v); if(o)parts.push("غير ذلك: "+o);
+    return parts.length?parts.join(" — "):null;
+  }
+  if(q.type==='multi'){
+    let parts=[]; if(Array.isArray(v)&&v.length)parts=parts.concat(v); if(o)parts.push("غير ذلك: "+o);
+    return parts.length? parts.map(x=>x).join("، ") : null;
+  }
+  if(q.type==='table'){
+    const cur=state[q.id]; if(!cur||!Object.keys(cur).length) return null;
+    let t="\n\n| "+q.cols.join(" | ")+" |\n| "+q.cols.map(()=>"---").join(" | ")+" |\n";
+    q.rows.forEach((row,ri)=>{
+      let cells=[row];
+      for(let ci=1; ci<q.cols.length; ci++){ cells.push(cur[q.id+'__'+ri+'__'+ci]||""); }
+      t+="| "+cells.join(" | ")+" |\n";
+    });
+    return t;
+  }
+  return null;
+}
+
+/* ===================== أزرار ===================== */
+function showMarkdown(){
+  document.getElementById('mdText').value=buildMarkdown();
+  document.getElementById('mdModal').classList.add('show');
+}
+function closeModal(){ document.getElementById('mdModal').classList.remove('show'); }
+function copyMarkdown(){
+  const md=buildMarkdown();
+  const done=()=>toast("تم نسخ النتائج بصيغة Markdown ✓");
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(md).then(done).catch(()=>fallbackCopy(md,done));
+  } else fallbackCopy(md,done);
+}
+function fallbackCopy(text,cb){
+  const ta=document.getElementById('mdText'); ta.value=text; ta.removeAttribute('readonly');
+  ta.select(); ta.setSelectionRange(0,99999);
+  try{ document.execCommand('copy'); cb&&cb(); }catch(e){ toast("انسخ النص يدوياً من النافذة"); }
+  ta.setAttribute('readonly','');
+}
+function downloadMarkdown(){
+  const md=buildMarkdown();
+  const blob=new Blob([md],{type:'text/markdown;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  const cn=(state['meta_center']||'المركز').replace(/[\\/:*?"<>|]/g,'_');
+  a.download="استبيان_متطلبات_"+cn+".md";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+  toast("تم تنزيل ملف Markdown ✓");
+}
+function clearAll(){
+  if(!confirm("سيتم مسح كل الإجابات المحفوظة. متابعة؟")) return;
+  state={}; localStorage.removeItem(KEY);
+  document.getElementById('form').innerHTML='';
+  document.getElementById('metacard').innerHTML='';
+  renderMeta(); renderForm(); updateProgress();
+  toast("تم مسح كل الإجابات");
+}
+let toastTimer=null;
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2000);
+}
+document.getElementById('mdModal').addEventListener('click',e=>{ if(e.target.id==='mdModal') closeModal(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
+/* ===================== التشغيل ===================== */
+renderMeta();
+renderForm();
+updateProgress();
+</script>
+</body>
+</html>
