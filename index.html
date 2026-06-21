@@ -183,9 +183,9 @@ footer{text-align:center; color:var(--muted); font-size:.82rem; padding:24px 16p
   <div class="brand"><span class="dot">●</span><span class="t">استبيان متطلبات نظام المركز</span></div>
   <div class="actions">
     <span class="savestate" id="savestate">يُحفظ تلقائياً</span>
-    <button class="btn btn-light" onclick="showMarkdown()">⧉ Markdown</button>
-    <button class="btn btn-light" onclick="downloadMarkdown()">⭳ .md</button>
-    <button class="btn btn-ghost" onclick="clearAll()">↺ مسح</button>
+    <button class="btn btn-light" onclick="showMarkdown()">Markdown</button>
+    <button class="btn btn-light" onclick="downloadMarkdown()">.md</button>
+    <button class="btn btn-ghost" onclick="clearAll()">مسح</button>
   </div>
 </div>
 <div class="progwrap"><div class="progbar" id="progbar"></div></div>
@@ -206,7 +206,7 @@ footer{text-align:center; color:var(--muted); font-size:.82rem; padding:24px 16p
   <div class="submitcard">
     <h3>إنهاء وإرسال</h3>
     <p>عند الانتهاء من التعبئة، اضغط الزر لتصل الإجابات كاملةً إلى إدارة المركز مباشرةً.</p>
-    <button class="btn-send" id="sendBtn" onclick="submitToAdmin()">✉ إرسال لفادي</button>
+    <button class="btn-send" id="sendBtn" onclick="submitToAdmin()">إرسال لفادي</button>
     <div class="subnote">أو <a onclick="downloadMarkdown()">نزّل الإجابات كملف</a> وأرسلها يدوياً.</div>
   </div>
 
